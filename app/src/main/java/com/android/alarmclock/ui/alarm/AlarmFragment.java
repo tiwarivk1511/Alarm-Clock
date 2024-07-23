@@ -9,12 +9,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +31,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
+import androidx.work.WorkerParameters;
 
 import com.android.alarmclock.R;
 import com.android.alarmclock.databinding.FragmentAlarmBinding;
@@ -40,6 +43,8 @@ import com.android.alarmclock.supportingAlarmClasses.Alarm;
 import com.android.alarmclock.supportingAlarmClasses.AlarmAdapter;
 import com.android.alarmclock.supportingAlarmClasses.AlarmDatabase;
 import com.android.alarmclock.supportingAlarmClasses.AlarmReceiver;
+import com.android.alarmclock.supportingAlarmClasses.AlarmScheduler;
+import com.android.alarmclock.supportingAlarmClasses.AlarmWorker;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.materialswitch.MaterialSwitch;
@@ -50,6 +55,7 @@ import com.google.android.material.timepicker.TimeFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -65,6 +71,8 @@ public class AlarmFragment extends Fragment {
     private List<Alarm> alarms = new ArrayList<>();
     private AlarmDatabase alarmDatabase;
     private AlarmAdapter alarmAdapter;
+    private AlarmScheduler alarmScheduler;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,6 +81,9 @@ public class AlarmFragment extends Fragment {
 
         // Initialize the alarm database
         alarmDatabase = AlarmDatabase.getDatabase(requireContext());
+
+        // Initialize the AlarmScheduler
+        alarmScheduler = new AlarmScheduler(requireContext());
 
         // Set up RecyclerView and Adapter
         alarmAdapter = new AlarmAdapter(alarms, getContext(), alarmDatabase, this::showEditAlarmDialog);
@@ -142,7 +153,7 @@ public class AlarmFragment extends Fragment {
                                     @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY,
                                     int actionState, boolean isCurrentlyActive) {
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                        .addSwipeRightBackgroundColor(R.color.colorAccent)
+                        .addSwipeRightBackgroundColor(Color.RED)
                         .addSwipeRightActionIcon(R.drawable.baseline_delete_outline_24)
                         .create()
                         .decorate();
@@ -163,6 +174,7 @@ public class AlarmFragment extends Fragment {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     private void showAddAlarmDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_alarm, null);
@@ -250,6 +262,9 @@ public class AlarmFragment extends Fragment {
     }
 
     private void showEditAlarmDialog(Alarm alarm) {
+
+        // Show the dialog
+        // Variables for the dialog
         LayoutInflater inflater = LayoutInflater.from(requireContext());
         View dialogView = inflater.inflate(R.layout.edit_alarm, null);
         TextView textViewTitle = dialogView.findViewById(R.id.textViewTitle);
@@ -267,20 +282,20 @@ public class AlarmFragment extends Fragment {
         textViewTime.setText(alarm.getFormattedTime());
         switchVibrate.setChecked(alarm.isVibrate());
         editTextTaskLabel.setText(alarm.getTaskLabel());
+        textViewRepeat.setText(alarm.getRepeatOption());
 
         // Set up repeat options
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(),
                 R.array.repeat_options, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerRepeat.setAdapter(adapter);
-        int repeatPosition = adapter.getPosition(alarm.getRepeatOption());
-        spinnerRepeat.setSelection(repeatPosition >= 0 ? repeatPosition : 0);
 
         // Create and show dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
 
+        // Pick time button click listener
         buttonPickTime.setOnClickListener(v -> {
             // Create a MaterialTimePicker instance with 12-hour format
             MaterialTimePicker timePicker = new MaterialTimePicker.Builder()
@@ -307,6 +322,7 @@ public class AlarmFragment extends Fragment {
             timePicker.show(((AppCompatActivity) requireContext()).getSupportFragmentManager(), "TIME_PICKER");
         });
 
+        // Pick ringtone button click listener
         buttonPickRingtone.setOnClickListener(v -> {
             Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_RINGTONE);
@@ -316,6 +332,7 @@ public class AlarmFragment extends Fragment {
             ((AppCompatActivity) requireContext()).startActivityForResult(intent, 1); // Use startActivityForResult if using Activity
         });
 
+        // Save alarm button click listener
         buttonSaveAlarm.setOnClickListener(v -> {
             // Save the updated alarm details
             alarm.setTaskLabel(editTextTaskLabel.getText().toString());
@@ -323,6 +340,13 @@ public class AlarmFragment extends Fragment {
             alarm.setRepeatOption(spinnerRepeat.getSelectedItem().toString());
 
             new Thread(() -> alarmDatabase.alarmDao().update(alarm)).start();
+
+            // Update the alarm in the AlarmScheduler
+            updateAlarm(alarm.getId(), alarm.getHour(), alarm.getMinute(), alarm.getRepeatOption(), alarm.isVibrate(), alarm.getRingtoneUri(), alarm.getTaskLabel());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                alarmScheduler.scheduleAlarm(alarm.getId(), Calendar.getInstance());
+            }
+
             Toast.makeText(requireContext(), "Alarm updated", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         });
@@ -330,6 +354,7 @@ public class AlarmFragment extends Fragment {
         dialog.show();
     }
 
+    // Save alarm
     private void saveAlarm(int hour, int minute, String repeatOption, boolean vibrate, String ringtoneUri, String taskLabel) {
         Alarm newAlarm = new Alarm();
         newAlarm.setHour(hour);
@@ -349,27 +374,49 @@ public class AlarmFragment extends Fragment {
                 alarms.add(newAlarm);
                 alarmAdapter.updateAlarms(alarms);
             });
-
             // Schedule the alarm with AlarmManager
             scheduleAlarm(newAlarm);
         }).start();
     }
 
-    private void scheduleAlarm(Alarm alarm) {
-        AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(requireContext(), AlarmReceiver.class);
-        intent.putExtra("alarm_id", alarm.getId());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(requireContext(), alarm.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
+    private void scheduleAlarm(@NonNull Alarm alarm) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, alarm.getHour());
         calendar.set(Calendar.MINUTE, alarm.getMinute());
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
-        // Schedule the alarm
-        alarmManager.setExact(RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        // Schedule the main alarm with AlarmManager
+        AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+        Intent alarmIntent = new Intent(getContext(), AlarmReceiver.class);
+        alarmIntent.putExtra("ALARM_ID", alarm.getId());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                getContext(),
+                alarm.getId(),
+                alarmIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+        // Schedule the notification 5 minutes before the alarm
+        Calendar notificationCalendar = Calendar.getInstance();
+        notificationCalendar.set(Calendar.HOUR_OF_DAY, alarm.getHour());
+        notificationCalendar.set(Calendar.MINUTE, alarm.getMinute() - 5);
+        notificationCalendar.set(Calendar.SECOND, 0);
+        notificationCalendar.set(Calendar.MILLISECOND, 0);
+
+        long delay = notificationCalendar.getTimeInMillis() - System.currentTimeMillis();
+
+        // Use WorkManager to handle the notification
+        WorkRequest notificationWorkRequest = new OneTimeWorkRequest.Builder(AlarmWorker.class)
+                .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+                .setInputData(new Data.Builder().putInt(AlarmWorker.ALARM_ID, alarm.getId()).build())
+                .build();
+
+        WorkManager.getInstance(getContext()).enqueue(notificationWorkRequest);
     }
+
 
     private void updateAlarm(int id, int hour, int minute, String repeatOption, boolean vibrate, String ringtoneUri, String taskLabel) {
         new Thread(() -> {

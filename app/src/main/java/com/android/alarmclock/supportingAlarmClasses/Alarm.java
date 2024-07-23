@@ -1,5 +1,7 @@
 package com.android.alarmclock.supportingAlarmClasses;
 
+import android.widget.AdapterView;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -57,7 +59,6 @@ public class Alarm {
     public String getRepeatOption() {
         return repeatOption;
     }
-
     public void setRepeatOption(String repeatOption) {
         this.repeatOption = repeatOption;
     }
