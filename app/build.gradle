@@ -1,0 +1,65 @@
+plugins {
+    alias(libs.plugins.android.application)
+}
+
+android {
+    namespace 'com.android.alarmclock'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.android.alarmclock"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.activity
+    implementation libs.constraintlayout
+    implementation libs.navigation.runtime
+    implementation libs.navigation.ui
+    implementation libs.navigation.fragment
+    testImplementation libs.junit
+    androidTestImplementation libs.ext.junit
+    androidTestImplementation libs.espresso.core
+
+    // room database
+    def room_version = "2.6.1"
+    implementation libs.androidx.room.runtime
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    // optional - RxJava2 support for Room
+    implementation libs.androidx.room.rxjava2
+    // optional - RxJava3 support for Room
+    implementation libs.room.rxjava3
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation libs.androidx.room.guava
+    // optional - Test helpers
+    testImplementation libs.androidx.room.testing
+    // optional - Paging 3 Integration
+    implementation libs.androidx.room.paging
+
+
+    // swipe
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
+}

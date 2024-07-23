@@ -1,0 +1,35 @@
+[versions]
+agp = "8.5.0"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.0"
+material = "1.12.0"
+activity = "1.9.0"
+constraintlayout = "2.1.4"
+navigationRuntime = "2.7.7"
+navigationUi = "2.7.7"
+navigationFragment = "2.7.7"
+roomRxjava3 = "2.6.1"
+
+[libraries]
+androidx-room-guava = { module = "androidx.room:room-guava", version.ref = "roomRxjava3" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "roomRxjava3" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRxjava3" }
+androidx-room-rxjava2 = { module = "androidx.room:room-rxjava2", version.ref = "roomRxjava3" }
+androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "roomRxjava3" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+navigation-runtime = { group = "androidx.navigation", name = "navigation-runtime", version.ref = "navigationRuntime" }
+navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
+navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
+room-rxjava3 = { module = "androidx.room:room-rxjava3", version.ref = "roomRxjava3" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+

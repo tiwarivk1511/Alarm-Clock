@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:theme="@style/ThemeOverlay.MaterialComponents.Dialog">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Alarm"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/textViewTime"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Set Alarm Time -->
+    <TextView
+        android:id="@+id/textViewTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Alarm Time"
+        android:layout_marginTop="16dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonPickTime"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick Time"
+        app:icon="@drawable/baseline_time_24"
+        app:iconGravity="textStart"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textViewTime" />
+
+    <!-- Repeat Options -->
+    <TextView
+        android:id="@+id/textViewRepeat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Repeat Options"
+        
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewTime"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutSpinner"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewRepeat">
+
+        <Spinner
+            android:id="@+id/spinnerRepeat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Ringtone Selection -->
+    <TextView
+        android:id="@+id/textViewRingtone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ringtone"
+        
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutSpinner"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonPickRingtone"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick Ringtone"
+        app:icon="@drawable/outline_circle_notifications_24"
+        app:iconGravity="textStart"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewRingtone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textViewRingtone" />
+
+    <!-- Vibrate Option -->
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switchVibrate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vibrate"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonPickRingtone"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <!-- Task Label -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutTaskLabel"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Task Label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switchVibrate">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextTaskLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Button to Save Alarm -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/buttonSaveAlarm"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:text="Save Alarm"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="4dp"
+        android:backgroundTint="@color/primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutTaskLabel"
+        android:layout_marginBottom="16dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Alarm"
+            android:padding="5dp"
+            android:textColor="@color/background"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            />
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
