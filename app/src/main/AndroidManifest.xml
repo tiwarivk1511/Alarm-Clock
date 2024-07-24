@@ -33,6 +33,7 @@
         </activity>
 
         <receiver android:name=".supportingAlarmClasses.AlarmReceiver" android:exported="false" />
+        <receiver android:name=".ui.timer.StopSoundReceiver" />
 <!--        Alarm Clock Activity -->
         <activity android:name=".AlarmClockActivity"
                   android:exported="true">

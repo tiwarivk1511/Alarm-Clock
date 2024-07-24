@@ -35,29 +35,41 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/text_home" />
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/alarmRecyclerView"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:padding="10dp"
-        android:background="@color/background"
-    tools:listitem="@layout/alarm_card"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/modernAnalogClock" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="300dp"
+        app:layout_constraintEnd_toEndOf="@+id/modernAnalogClock"
+        app:layout_constraintStart_toStartOf="@+id/modernAnalogClock"
+        app:layout_constraintTop_toBottomOf="@+id/modernAnalogClock">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/alarmRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/modernAnalogClock"
+            tools:listitem="@layout/alarm_card" />
+
+    </com.google.android.material.card.MaterialCardView>
 
 
+    <!-- FloatingActionButton -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addAlarmBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:backgroundTint="@color/primaryDark"
+        android:rotation="360"
+        android:saveEnabled="false"
         android:src="@drawable/baseline_add_circle_outline_24"
+        android:stateListAnimator="@anim/nav_default_enter_anim"
         android:tint="@color/background"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:rippleColor="@color/background" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

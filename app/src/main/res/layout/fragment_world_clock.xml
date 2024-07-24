@@ -56,8 +56,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:backgroundTint="@color/primaryDark"
+        android:rotation="360"
+        android:saveEnabled="false"
         android:src="@drawable/baseline_add_circle_outline_24"
+        android:stateListAnimator="@anim/nav_default_enter_anim"
         android:tint="@color/background"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:rippleColor="@color/background" />
 </androidx.constraintlayout.widget.ConstraintLayout>

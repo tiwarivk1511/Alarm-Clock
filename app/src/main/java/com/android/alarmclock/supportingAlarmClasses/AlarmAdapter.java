@@ -56,19 +56,32 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
         return new AlarmViewHolder(view);
     }
 
+    @SuppressLint("UseCompatLoadingForColorStateLists")
     @Override
     public void onBindViewHolder(@NonNull AlarmViewHolder holder, int position) {
         Alarm alarm = alarmList.get(position);
 
         holder.alarmTime.setText(alarm.getFormattedTime());
         holder.alarmRepeatInfo.setText(alarm.getRepeatOption());
-        holder.alarmSwitch.setChecked(alarm.isEnabled());
 
+        // Set the initial switch state and track tint
+        holder.alarmSwitch.setChecked(alarm.isEnabled());
+        if (alarm.isEnabled()) {
+            holder.alarmSwitch.setTrackTintList(context.getResources().getColorStateList(R.color.colorPrimary));
+        } else {
+            holder.alarmSwitch.setTrackTintList(context.getResources().getColorStateList(R.color.colorTextSecondary));
+        }
+
+        // Set the onCheckedChangeListener
         holder.alarmSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             alarm.setEnabled(isChecked);
+            if (alarm.isEnabled()) {
+                holder.alarmSwitch.setTrackTintList(context.getResources().getColorStateList(R.color.colorPrimary));
+            } else {
+                holder.alarmSwitch.setTrackTintList(context.getResources().getColorStateList(R.color.colorTextSecondary));
+            }
             new Thread(() -> alarmDatabase.alarmDao().update(alarm)).start(); // Update alarm in the database
         });
-
 
         holder.alarmCard.setOnLongClickListener(v -> {
             // Show edit dialog for the alarm
@@ -77,7 +90,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
         });
 
         // Set card elevation
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             holder.alarmCard.setCardElevation(16);
         }
 
@@ -85,6 +98,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
         holder.alarmCard.setCardBackgroundColor(Color.WHITE);
         holder.alarmCard.setStrokeColor(Color.LTGRAY);
     }
+
 
     private void showEditAlarmDialog(Alarm alarm) {
         LayoutInflater inflater = LayoutInflater.from(context);
