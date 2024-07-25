@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 <!--    title -->
     <TextView
         android:id="@+id/timerTitle"
@@ -11,6 +12,7 @@
         android:text="Timer"
         android:textSize="35dp"
         android:textStyle="bold"
+        android:textColor="@color/background"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,10 +25,20 @@
         android:id="@+id/timerDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="00:00:00"
         android:layout_marginTop="25dp"
-        android:textColor="@color/primaryDark"
-        android:textSize="72sp"
+        android:text="00:00:00"
+        android:textColor="@color/background"
+        android:textSize="50sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:src="@drawable/ring"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timerTitle" />
@@ -40,7 +52,7 @@
         android:layout_marginStart="20dp"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@color/textPrimary"
+        android:textColor="@color/background"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="@+id/linearLayout" />
 
@@ -62,6 +74,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:hintTextColor="@color/white"
+            app:boxStrokeColor="@color/white"
             android:hint="HH">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -69,6 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="HH"
+                android:textColor="@color/background"
                 android:inputType="number"
                 android:textSize="24sp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -78,6 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text=":"
+            android:textColor="@color/background"
             android:textSize="35dp" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -85,6 +101,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:hintTextColor="@color/white"
+            app:boxStrokeColor="@color/white"
             android:hint="MM">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -92,6 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="MM"
+                android:textColor="@color/background"
                 android:inputType="number"
                 android:textSize="24sp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -101,6 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text=":"
+            android:textColor="@color/background"
             android:textSize="35dp" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -108,6 +128,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:hintTextColor="@color/white"
+            app:boxStrokeColor="@color/white"
             android:hint="SS">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -115,6 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="SS"
+                android:textColor="@color/background"
                 android:inputType="number"
                 android:textSize="24sp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -130,7 +153,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="Total Aspect Time"
-        android:textColor="@color/textPrimary"
+        android:textColor="@color/background"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/linearLayout"
@@ -143,7 +166,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="0 days 0 hours 0 minutes 0 seconds"
-        android:textColor="@color/textSecondary"
+        android:textColor="@color/background"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:layout_constraintTop_toBottomOf="@+id/totalAspectTime" />
@@ -156,7 +179,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:cardCornerRadius="50dp"
+        app:cardCornerRadius="15dp"
         app:cardElevation="4dp"
         app:cardBackgroundColor="@color/background"
         android:layout_marginBottom="16dp">
@@ -180,7 +203,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:cardCornerRadius="50dp"
+            app:cardCornerRadius="15dp"
             app:cardElevation="4dp"
             android:visibility="gone"
             app:cardBackgroundColor="@color/background"

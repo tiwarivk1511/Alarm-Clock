@@ -4,26 +4,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@color/colorBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/alarm_clock"
+    <!-- AnalogClock -->
+    <AnalogClock
+        android:id="@+id/modernAnalogClock"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="40dp"
+        android:dial="@drawable/custom_dial"
+        android:hand_hour="@drawable/custom_hour_hand"
+        android:hand_minute="@drawable/custom_minute_hand"
+        android:hand_second="@drawable/custom_second_hand"
+        android:scaleType="centerInside"
+        android:tint="@color/colorSurface"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:src="@drawable/ring"
+        app:layout_constraintBottom_toBottomOf="@+id/modernAnalogClock"
+        app:layout_constraintEnd_toEndOf="@+id/modernAnalogClock"
+        app:layout_constraintStart_toStartOf="@+id/modernAnalogClock"
+        app:layout_constraintTop_toTopOf="@+id/modernAnalogClock" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Alarm Clock"
         android:layout_marginBottom="40dp"
-        android:textSize="22sp"
+        android:textSize="28sp"
         android:textStyle="bold"
+        android:textColor="@color/background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

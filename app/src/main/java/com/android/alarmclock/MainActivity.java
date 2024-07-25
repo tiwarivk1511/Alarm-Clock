@@ -23,6 +23,11 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        //change the color of status bar elements icons
+        getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+
+
+
         try {
 
             //code to remove splash screen using Handler

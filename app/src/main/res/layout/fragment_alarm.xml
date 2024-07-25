@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/colorBackground"
     android:layout_height="match_parent">
 
     <!-- TextView -->
@@ -15,45 +16,46 @@
         android:textStyle="bold"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:textColor="@color/colorBackground"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="@color/background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- AnalogClock -->
     <AnalogClock
         android:id="@+id/modernAnalogClock"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:dial="@drawable/custom_dial"
         android:hand_hour="@drawable/custom_hour_hand"
         android:hand_minute="@drawable/custom_minute_hand"
         android:hand_second="@drawable/custom_second_hand"
         android:scaleType="centerInside"
         android:tint="@color/colorSurface"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/text_home" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_home" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="300dp"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:src="@drawable/ring"
+        app:layout_constraintBottom_toBottomOf="@+id/modernAnalogClock"
         app:layout_constraintEnd_toEndOf="@+id/modernAnalogClock"
         app:layout_constraintStart_toStartOf="@+id/modernAnalogClock"
-        app:layout_constraintTop_toBottomOf="@+id/modernAnalogClock">
+        app:layout_constraintTop_toTopOf="@+id/modernAnalogClock" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/alarmRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/modernAnalogClock"
-            tools:listitem="@layout/alarm_card" />
-
-    </com.google.android.material.card.MaterialCardView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/alarmRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:background="@color/colorBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        tools:listitem="@layout/alarm_card" />
 
 
     <!-- FloatingActionButton -->

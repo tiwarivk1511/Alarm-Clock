@@ -2,6 +2,7 @@ package com.android.alarmclock.ui.world_clock;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -12,20 +13,16 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.alarmclock.R;
 import com.android.alarmclock.databinding.FragmentWorldClockBinding;
-import com.android.alarmclock.databinding.WorldClockLayoutBinding;
 import com.android.alarmclock.supportingWorldClockClasses.WorldClock;
 import com.android.alarmclock.supportingWorldClockClasses.WorldClockAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
 public class WorldClockFragment extends Fragment {
@@ -34,41 +31,61 @@ public class WorldClockFragment extends Fragment {
     private RecyclerView recyclerView;
     private WorldClockAdapter adapter;
     private List<WorldClock> worldClockList;
+    private Handler handler = new Handler();
+    private Runnable updateTimeRunnable;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         binding = FragmentWorldClockBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
 
+        worldClockList = new ArrayList<>();
+        adapter = new WorldClockAdapter(worldClockList);
+        recyclerView = binding.recyclerViewWorldClock;
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        recyclerView.setAdapter(adapter);
+
         binding.fabAddWorldClock.setOnClickListener(v -> {
-            // Show the add world clock dialog
             showAddWorldClockDialog();
         });
+
+        startUpdatingTime(); // Start periodic updates for world clocks
 
         return rootView;
     }
 
+    private void startUpdatingTime() {
+        updateTimeRunnable = new Runnable() {
+            @Override
+            public void run() {
+                for (WorldClock worldClock : worldClockList) {
+                    worldClock.updateTime();
+                }
+                adapter.notifyDataSetChanged();
+                handler.postDelayed(this, 1000); // Update every second
+            }
+        };
+        handler.post(updateTimeRunnable);
+    }
+
     private void showAddWorldClockDialog() {
-        // Show the add world clock dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());  // Use 'this' if inside an Activity, otherwise use 'requireContext()' in Fragment
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         View dialogView = getLayoutInflater().inflate(R.layout.search_world_time, null);
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
 
         RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerViewWorldClock);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext())); // Use 'this' if inside an Activity, otherwise use 'requireContext()' in Fragment
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         EditText editTextSearch = dialogView.findViewById(R.id.editTextSearch);
 
         List<WorldClock> worldClockList = new ArrayList<>();
         List<WorldClock> filteredWorldClockList = new ArrayList<>();
 
-        // Fetch all available time zone IDs
         String[] availableTimeZones = TimeZone.getAvailableIDs();
         for (String timeZone : availableTimeZones) {
-            String cityName = timeZone.replace('_', ' '); // Convert underscore to space for better readability
+            String cityName = timeZone.replace('_', ' ');
             WorldClock worldClock = new WorldClock(cityName, timeZone);
             worldClockList.add(worldClock);
             filteredWorldClockList.add(worldClock);
@@ -104,4 +121,9 @@ public class WorldClockFragment extends Fragment {
         dialog.show();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(updateTimeRunnable); // Stop updating time when fragment is destroyed
+    }
 }

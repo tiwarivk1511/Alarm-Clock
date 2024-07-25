@@ -3,6 +3,9 @@
     <style name="Base.Theme.AlarmClock" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
     </style>
 
     <style name="Theme.AlarmClock" parent="Base.Theme.AlarmClock" />
@@ -15,6 +18,13 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorSurface">@color/colorSurface</item>
     </style>
+
+    <style name="Widget.BottomNavigationView.Dark" parent="Widget.Design.BottomNavigationView">
+        <item name="itemIconTint">@drawable/bottom_nav_item_color</item>
+        <item name="itemTextColor">@drawable/bottom_nav_item_color</item>
+        <item name="android:background">@color/colorTextSecondary</item>
+    </style>
+
 
     <!-- Theme for dialogs -->
     <style name="ThemeOverlay.MaterialComponents.Dialog" parent="ThemeOverlay.MaterialComponents">

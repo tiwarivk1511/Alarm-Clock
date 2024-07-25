@@ -12,11 +12,18 @@
     <color name="textSecondary">#80000000</color> <!-- Semi-transparent black for secondary text -->
 
 
+    <color name="bottom_nav_background">#121212</color> <!-- Dark background color -->
+    <color name="bottom_nav_icon_active">#FFFFFF</color> <!-- Active icon color -->
+    <color name="bottom_nav_icon_inactive">#B3B3B3</color> <!-- Inactive icon color -->
+    <color name="bottom_nav_text_active">#FFFFFF</color> <!-- Active text color -->
+    <color name="bottom_nav_text_inactive">#B3B3B3</color> <!-- Inactive text color -->
+
+
     <!-- Dark Theme Colors -->
     <color name="colorPrimaryDark">#1A4C9C</color> <!-- Dark Blue -->
     <color name="colorPrimary">#2C75DE</color> <!-- Lighter Blue -->
     <color name="colorAccent">#FF0000</color> <!-- Red -->
-    <color name="colorBackground">#121212</color> <!-- Dark Background -->
+    <color name="colorBackground">#202020</color> <!-- Dark Background -->
     <color name="colorSurface">#1E1E1E</color> <!-- Dark Surface -->
     <color name="colorTextPrimary">#FFFFFF</color> <!-- White Text -->
     <color name="colorTextSecondary">#B3B3B3</color> <!-- Light Gray Text -->

@@ -5,13 +5,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +30,7 @@ public class TimerFragment extends Fragment {
     private CountDownTimer countDownTimer;
     private long timeLeftInMillis;
     private boolean timerRunning;
-    private static MediaPlayer mediaPlayer;
-    private Ringtone ringtone;
+    private static Ringtone ringtone;
     private static final String CHANNEL_ID = "timer_channel";
 
     @Override
@@ -157,7 +155,7 @@ public class TimerFragment extends Fragment {
 
     private PendingIntent getStopPendingIntent() {
         Intent intent = new Intent(getActivity(), StopSoundReceiver.class);
-        return PendingIntent.getBroadcast(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     private void playAlarmSound() {
@@ -165,8 +163,10 @@ public class TimerFragment extends Fragment {
             Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
             if (defaultRingtoneUri != null) {
                 ringtone = RingtoneManager.getRingtone(getActivity(), defaultRingtoneUri);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                    ringtone.setLooping(true); // Set to true if you want it to loop
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        ringtone.setLooping(true); // Set to true if you want it to loop
+                    }
                 }
             }
         }
@@ -176,10 +176,9 @@ public class TimerFragment extends Fragment {
     }
 
     public static void stopAlarmSound() {
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
-            mediaPlayer = null;
+        if (ringtone != null && ringtone.isPlaying()) {
+            ringtone.stop();
+            ringtone = null;
         }
     }
 

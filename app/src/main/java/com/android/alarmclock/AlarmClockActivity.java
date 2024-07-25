@@ -6,6 +6,8 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.View;
+import android.view.WindowInsetsController;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -55,6 +57,9 @@ public class AlarmClockActivity extends AppCompatActivity {
             return insets;
         });
 
+        getWindow().setStatusBarColor(getResources().getColor(R.color.background)); // Ensure this color is dark enough for white icons
+
+
         // Setup Navigation Component
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_alarm_clock);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -78,6 +83,22 @@ public class AlarmClockActivity extends AppCompatActivity {
                 }
             }
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // For Android 11 and above
+            WindowInsetsController controller = getWindow().getInsetsController();
+            if (controller != null) {
+                controller.setSystemBarsAppearance(
+                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS);
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // For Android 6.0 to 10
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+
+
+
     }
 
     @Override

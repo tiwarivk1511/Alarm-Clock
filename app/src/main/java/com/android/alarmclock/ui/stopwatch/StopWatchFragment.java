@@ -1,66 +1,103 @@
 package com.android.alarmclock.ui.stopwatch;
 
 import android.os.Bundle;
-
+import android.os.Handler;
+import android.os.SystemClock;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.TextView;
 import com.android.alarmclock.R;
+import com.google.android.material.card.MaterialCardView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link StopWatchFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class StopWatchFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private TextView textTimer;
+    private MaterialCardView startBtn, pauseBtn, resetBtn;
+    private Handler handler = new Handler();
+    private long startTime, timeInMilliseconds = 0L, timeSwapBuff = 0L, updatedTime = 0L;
+    private int seconds, minutes, milliseconds, hours;
+    private boolean isRunning = false;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Runnable updateTimer = new Runnable() {
+        @Override
+        public void run() {
+            timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
+            updatedTime = timeSwapBuff + timeInMilliseconds;
 
-    public StopWatchFragment() {
-        // Required empty public constructor
-    }
+            seconds = (int) (updatedTime / 1000);
+            minutes = seconds / 60;
+            hours = minutes / 60;
+            seconds = seconds % 60;
+            minutes = minutes % 60;
+            milliseconds = (int) (updatedTime % 1000);
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment StopWatchFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static StopWatchFragment newInstance(String param1, String param2) {
-        StopWatchFragment fragment = new StopWatchFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+            textTimer.setText(String.format("%02d  :  %02d  :  %02d  :  %03d", hours, minutes, seconds, milliseconds));
+            handler.postDelayed(this, 0);
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        // Initialization if needed
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_stop_watch, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_stop_watch, container, false);
+        textTimer = view.findViewById(R.id.textTimer);
+        startBtn = view.findViewById(R.id.startBtn);
+        pauseBtn = view.findViewById(R.id.pauseBtn);
+        resetBtn = view.findViewById(R.id.resetCard);
+
+        startBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isRunning) {
+                    startTime = SystemClock.uptimeMillis();
+                    handler.post(updateTimer);
+                    isRunning = true;
+                    startBtn.setVisibility(View.GONE);
+                    pauseBtn.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        pauseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isRunning) {
+                    timeSwapBuff += timeInMilliseconds;
+                    handler.removeCallbacks(updateTimer);
+                    isRunning = false;
+                    startBtn.setVisibility(View.VISIBLE);
+                    pauseBtn.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeSwapBuff = 0L;
+                timeInMilliseconds = 0L;
+                updatedTime = 0L;
+                seconds = 0;
+                minutes = 0;
+                hours = 0;
+                milliseconds = 0;
+                textTimer.setText("00  :  00  :  00  :  000");
+                if (isRunning) {
+                    handler.removeCallbacks(updateTimer);
+                    isRunning = false;
+                    startBtn.setVisibility(View.VISIBLE);
+                    pauseBtn.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        return view;
     }
 }
