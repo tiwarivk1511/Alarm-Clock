@@ -46,39 +46,9 @@ public class WorldClockFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
 
-        binding.fabAddWorldClock.setOnClickListener(v -> {
-            showAddWorldClockDialog();
-        });
-
         startUpdatingTime(); // Start periodic updates for world clocks
 
-        return rootView;
-    }
-
-    private void startUpdatingTime() {
-        updateTimeRunnable = new Runnable() {
-            @Override
-            public void run() {
-                for (WorldClock worldClock : worldClockList) {
-                    worldClock.updateTime();
-                }
-                adapter.notifyDataSetChanged();
-                handler.postDelayed(this, 1000); // Update every second
-            }
-        };
-        handler.post(updateTimeRunnable);
-    }
-
-    private void showAddWorldClockDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        View dialogView = getLayoutInflater().inflate(R.layout.search_world_time, null);
-        builder.setView(dialogView);
-        AlertDialog dialog = builder.create();
-
-        RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerViewWorldClock);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-
-        EditText editTextSearch = dialogView.findViewById(R.id.editTextSearch);
+        EditText editTextSearch = binding.editTextSearch;
 
         List<WorldClock> worldClockList = new ArrayList<>();
         List<WorldClock> filteredWorldClockList = new ArrayList<>();
@@ -118,8 +88,24 @@ public class WorldClockFragment extends Fragment {
             }
         });
 
-        dialog.show();
+        return rootView;
     }
+
+    private void startUpdatingTime() {
+        updateTimeRunnable = new Runnable() {
+            @Override
+            public void run() {
+                for (WorldClock worldClock : worldClockList) {
+                    worldClock.updateTime();
+                }
+                adapter.notifyDataSetChanged();
+                handler.postDelayed(this, 1000); // Update every second
+            }
+        };
+        handler.post(updateTimeRunnable);
+    }
+
+
 
     @Override
     public void onDestroy() {

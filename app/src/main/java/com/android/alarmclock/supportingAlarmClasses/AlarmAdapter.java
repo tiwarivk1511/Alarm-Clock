@@ -108,8 +108,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
         MaterialButton buttonPickTime = dialogView.findViewById(R.id.buttonPickTime);
         TextView textViewRepeat = dialogView.findViewById(R.id.textViewRepeat);
         Spinner spinnerRepeat = dialogView.findViewById(R.id.spinnerRepeat);
-        MaterialButton buttonPickRingtone = dialogView.findViewById(R.id.buttonPickRingtone);
-        MaterialSwitch switchVibrate = dialogView.findViewById(R.id.switchVibrate);
+
         TextInputEditText editTextTaskLabel = dialogView.findViewById(R.id.editTextTaskLabel);
         MaterialCardView buttonSaveAlarm = dialogView.findViewById(R.id.buttonSaveAlarm);
 
@@ -117,7 +116,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
 
         // Populate fields with alarm data
         textViewTime.setText(alarm.getFormattedTime());
-        switchVibrate.setChecked(alarm.isVibrate()); // Corrected method
+
         editTextTaskLabel.setText(alarm.getTaskLabel());
 
         // Set up repeat options
@@ -160,19 +159,12 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
             timePicker.show(((AppCompatActivity) context).getSupportFragmentManager(), "TIME_PICKER");
         });
 
-        buttonPickRingtone.setOnClickListener(v -> {
-            Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_RINGTONE);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Ringtone");
-            ((AppCompatActivity) context).startActivityForResult(intent, 1); // Use startActivityForResult if using Activity
-        });
+
 
         buttonSaveAlarm.setOnClickListener(v -> {
             // Save the updated alarm details
             alarm.setTaskLabel(editTextTaskLabel.getText().toString());
-            alarm.setVibrate(switchVibrate.isChecked()); // Corrected method
+
             alarm.setRepeatOption(spinnerRepeat.getSelectedItem().toString());
 
             new Thread(() -> alarmDatabase.alarmDao().update(alarm)).start();

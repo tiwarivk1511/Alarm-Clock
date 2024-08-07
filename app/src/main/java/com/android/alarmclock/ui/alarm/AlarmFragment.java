@@ -185,8 +185,6 @@ public class AlarmFragment extends Fragment {
 
         MaterialButton buttonPickTime = dialogView.findViewById(R.id.buttonPickTime);
         Spinner spinnerRepeatOption = dialogView.findViewById(R.id.spinnerRepeat);
-        MaterialSwitch switchVibrate = dialogView.findViewById(R.id.switchVibrate);
-        MaterialButton buttonSelectRingtone = dialogView.findViewById(R.id.buttonPickRingtone);
         EditText editTextTaskLabel = dialogView.findViewById(R.id.editTextTaskLabel);
         MaterialCardView buttonSaveAlarm = dialogView.findViewById(R.id.buttonSaveAlarm);
 
@@ -241,19 +239,19 @@ public class AlarmFragment extends Fragment {
         });
 
         // Select ringtone
-        buttonSelectRingtone.setOnClickListener(v -> {
-            Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Alarm Ringtone");
-            startActivityForResult(intent, 1);
-        });
+//        buttonSelectRingtone.setOnClickListener(v -> {
+//            Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+//            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
+//            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Alarm Ringtone");
+//            startActivityForResult(intent, 1);
+//        });
 
         // Save alarm
         buttonSaveAlarm.setOnClickListener(v -> {
             String taskLabel = editTextTaskLabel.getText().toString();
-            boolean vibrate = switchVibrate.isChecked();
+
             if (hour[0] != 0 && minute[0] != 0 && taskLabel != null && !taskLabel.isEmpty()) {
-                saveAlarm(hour[0], minute[0], repeatOption[0], vibrate, selectedRingtoneUri, taskLabel);
+                saveAlarm(hour[0], minute[0], repeatOption[0], selectedRingtoneUri, taskLabel);
                 dialog.dismiss();
             } else {
                 Toast.makeText(requireContext(), "Please fill all the fields", Toast.LENGTH_SHORT).show();
@@ -272,15 +270,12 @@ public class AlarmFragment extends Fragment {
         MaterialButton buttonPickTime = dialogView.findViewById(R.id.buttonPickTime); // Ensure this ID matches a MaterialButton in your layout
         TextView textViewRepeat = dialogView.findViewById(R.id.textViewRepeat);
         Spinner spinnerRepeat = dialogView.findViewById(R.id.spinnerRepeat);
-        MaterialButton buttonPickRingtone = dialogView.findViewById(R.id.buttonPickRingtone); // Ensure this ID matches a MaterialButton in your layout
-        MaterialSwitch switchVibrate = dialogView.findViewById(R.id.switchVibrate);
         TextInputEditText editTextTaskLabel = dialogView.findViewById(R.id.editTextTaskLabel);
         MaterialButton buttonSaveAlarm = dialogView.findViewById(R.id.buttonSaveAlarm); // Ensure this ID matches a MaterialButton in your layout
 
         // Populate fields with alarm data
         textViewTitle.setText("Edit Alarm");
         textViewTime.setText(alarm.getFormattedTime());
-        switchVibrate.setChecked(alarm.isVibrate());
         editTextTaskLabel.setText(alarm.getTaskLabel());
         textViewRepeat.setText(alarm.getRepeatOption());
 
@@ -323,20 +318,19 @@ public class AlarmFragment extends Fragment {
         });
 
         // Pick ringtone button click listener
-        buttonPickRingtone.setOnClickListener(v -> {
-            Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_RINGTONE);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Ringtone");
-            ((AppCompatActivity) requireContext()).startActivityForResult(intent, 1); // Use startActivityForResult if using Activity
-        });
+//        buttonPickRingtone.setOnClickListener(v -> {
+//            Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+//            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_RINGTONE);
+//            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
+//            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
+//            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Ringtone");
+//            ((AppCompatActivity) requireContext()).startActivityForResult(intent, 1); // Use startActivityForResult if using Activity
+//        });
 
         // Save alarm button click listener
         buttonSaveAlarm.setOnClickListener(v -> {
             // Save the updated alarm details
             alarm.setTaskLabel(editTextTaskLabel.getText().toString());
-            alarm.setVibrate(switchVibrate.isChecked());
             alarm.setRepeatOption(spinnerRepeat.getSelectedItem().toString());
 
             new Thread(() -> alarmDatabase.alarmDao().update(alarm)).start();
@@ -355,12 +349,11 @@ public class AlarmFragment extends Fragment {
     }
 
     // Save alarm
-    private void saveAlarm(int hour, int minute, String repeatOption, boolean vibrate, String ringtoneUri, String taskLabel) {
+    private void saveAlarm(int hour, int minute, String repeatOption, String ringtoneUri, String taskLabel) {
         Alarm newAlarm = new Alarm();
         newAlarm.setHour(hour);
         newAlarm.setMinute(minute);
         newAlarm.setRepeatOption(repeatOption);
-        newAlarm.setVibrate(vibrate);
         newAlarm.setRingtoneUri(ringtoneUri);
         newAlarm.setTaskLabel(taskLabel);
         newAlarm.setEnabled(true); // Set default value for enabled state
