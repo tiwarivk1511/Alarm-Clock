@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.android.alarmclock'
+    namespace 'com.alarm.alarmclock'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.android.alarmclock"
+        applicationId "com.alarm.alarmclock"
         minSdk 24
         targetSdk 34
         versionCode 1

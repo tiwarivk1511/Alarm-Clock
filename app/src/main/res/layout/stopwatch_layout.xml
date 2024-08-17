@@ -5,10 +5,12 @@
     android:layout_marginTop="8dp">
 
     <TextView
+        android:id="@+id/timeLap"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAlignment="center"
-        android:textSize="25sp"
+        android:textSize="18sp"
+        android:padding="5dp"
         android:hint="#1 time cover"
         android:textColorHint="@color/colorTextSecondary"
         android:textStyle="bold"

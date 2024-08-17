@@ -68,9 +68,31 @@
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:layout_marginTop="10dp"
+        tools:listitem="@layout/stopwatch_layout"
         app:layout_constraintBottom_toTopOf="@+id/startBtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/addCard"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="20dp"
+        app:cardBackgroundColor="@color/background"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="4dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:src="@drawable/baseline_add_circle_outline_24"
+            app:tint="@color/primaryDark" />
+    </com.google.android.material.card.MaterialCardView>
 
 
 
