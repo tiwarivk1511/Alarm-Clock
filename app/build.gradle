@@ -16,6 +16,15 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+//    signingConfigs {
+//        externalOverride {
+//            keyAlias 'key0'
+//            keyPassword 'Alpha@123'
+//            storeFile file('E:/Android Projects/Alarm-Clock/app/build/outputs/apk/aclock.jks')
+//            storePassword 'Alpha@123'
+//        }
+//    }
+
     buildTypes {
         release {
             minifyEnabled false

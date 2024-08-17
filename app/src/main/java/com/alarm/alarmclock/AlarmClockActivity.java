@@ -23,7 +23,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.alarm.alarmclock.R;
 import com.alarm.alarmclock.databinding.ActivityAlarmClockBinding;
 
 

@@ -10,8 +10,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.alarm.alarmclock.R;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -27,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
         //change the color of status bar elements icons
         getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-
-
 
         try {
 
