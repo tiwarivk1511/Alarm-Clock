@@ -57,29 +57,34 @@ public class AlarmClockActivity extends AppCompatActivity {
         //change the color of icons in status bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
-        // Setup Navigation Component
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_alarm_clock);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_stopwatch, R.id.navigation_timer, R.id.navigation_wordClock)
-                .build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
+        try{
+            // Setup Navigation Component
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_alarm_clock);
+            AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                    R.id.navigation_home, R.id.navigation_stopwatch, R.id.navigation_timer, R.id.navigation_wordClock)
+                    .build();
+            NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+            NavigationUI.setupWithNavController(binding.navView, navController);
 
-        // Check notification permission
-        // Check and request notification permission
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
-        } else {
-            // Check and request exact alarm permission
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.SCHEDULE_EXACT_ALARM) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SCHEDULE_EXACT_ALARM}, 1);
+            // Check notification permission
+            // Check and request notification permission
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestNotificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS);
             } else {
-                // Check and request set alarm permission
-                if (ContextCompat.checkSelfPermission(this, "com.android.alarm.permission.SET_ALARM") != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[]{"com.android.alarm.permission.SET_ALARM"}, 1);
+                // Check and request exact alarm permission
+                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.SCHEDULE_EXACT_ALARM) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.SCHEDULE_EXACT_ALARM}, 1);
+                } else {
+                    // Check and request set alarm permission
+                    if (ContextCompat.checkSelfPermission(this, "com.android.alarm.permission.SET_ALARM") != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(this, new String[]{"com.android.alarm.permission.SET_ALARM"}, 1);
+                    }
                 }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
 
 
 

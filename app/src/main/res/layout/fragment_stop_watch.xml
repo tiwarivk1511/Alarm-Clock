@@ -7,151 +7,149 @@
     android:background="@color/colorBackground">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:text="Stopwatch"
         android:textAlignment="center"
+        android:textColor="@color/background"
         android:textSize="35sp"
         android:textStyle="bold"
-        android:textColor="@color/background"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Stopwatch" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="320dp"
         android:src="@drawable/ring"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.233" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <TextView
-        android:id="@+id/textTimer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="00  :  00  :  00  :  000"
-        android:textAlignment="center"
-        android:textColor="@color/background"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.327" />
+            <TextView
+                android:id="@+id/textTimer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="00  :  00  :  00  :  000"
+                android:textAlignment="center"
+                android:textColor="@color/background"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="@+id/imageView3"
+                tools:layout_editor_absoluteX="16dp" />
 
-    <TextView
-        android:id="@+id/textTimerHint"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text=" Hrs.  Min.   Sec.   ms"
-        android:textAlignment="center"
-        android:textColor="@color/background"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTimer"/>
+            <TextView
+                android:id="@+id/textTimerHint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text=" Hrs.  Min.   Sec.   ms"
+                android:textAlignment="center"
+                android:textColor="@color/background"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textTimer" />
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/stopwatchRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginTop="10dp"
-        tools:listitem="@layout/stopwatch_layout"
-        app:layout_constraintBottom_toTopOf="@+id/startBtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
-
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/addCard"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="20dp"
-        app:cardBackgroundColor="@color/background"
-        app:cardCornerRadius="25dp"
-        app:cardElevation="4dp"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp"
-            android:src="@drawable/baseline_add_circle_outline_24"
-            app:tint="@color/primaryDark" />
-    </com.google.android.material.card.MaterialCardView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/stopwatchRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/startBtn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView3"
+                tools:listitem="@layout/stopwatch_layout" />
 
 
 
-    <!-- Buttons -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/startBtn"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:clickable="true"
-        android:background="@color/background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/resetCard">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/addCard"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="20dp"
+                android:backgroundTint="@color/background"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/stopwatchRecyclerView">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:src="@drawable/outline_play_circle_24"
-            app:tint="@color/primaryDark" />
-    </com.google.android.material.card.MaterialCardView>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:src="@drawable/baseline_add_circle_outline_24"
+                    app:tint="@color/primaryDark" />
+            </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/pauseBtn"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:clickable="true"
-        android:visibility="gone"
-        android:background="@color/background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/resetCard">
+            <!-- Buttons -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/startBtn"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/background"
+                android:clickable="true"
+                android:layout_marginTop="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/stopwatchRecyclerView">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:src="@drawable/outline_pause_circle_outline_24"
-            app:tint="@color/primaryDark" />
-    </com.google.android.material.card.MaterialCardView>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:src="@drawable/outline_play_circle_24"
+                    app:tint="@color/primaryDark" />
+            </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/resetCard"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:cardCornerRadius="25dp"
-        app:cardElevation="4dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="30dp"
-        app:cardBackgroundColor="@color/background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/pauseBtn"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/background"
+                android:clickable="true"
+                android:visibility="gone"
+                android:layout_marginTop="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/stopwatchRecyclerView">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp"
-            android:src="@drawable/outline_reset_alt_24"
-            app:tint="@color/primaryDark" />
-    </com.google.android.material.card.MaterialCardView>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:src="@drawable/outline_pause_circle_outline_24"
+                    app:tint="@color/primaryDark" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/resetCard"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="30dp"
+                android:backgroundTint="@color/background"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/stopwatchRecyclerView">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:src="@drawable/outline_reset_alt_24"
+                    app:tint="@color/primaryDark" />
+            </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,64 +6,83 @@
     android:background="@color/colorBackground"
     android:layout_height="match_parent">
 
-    <!-- TextView -->
-    <TextView
-        android:id="@+id/text_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Alarm"
-        android:textSize="35sp"
-        android:textStyle="bold"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/background"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- AnalogClock -->
-    <AnalogClock
-        android:id="@+id/modernAnalogClock"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="40dp"
-        android:dial="@drawable/custom_dial"
-        android:hand_hour="@drawable/custom_hour_hand"
-        android:hand_minute="@drawable/custom_minute_hand"
-        android:hand_second="@drawable/custom_second_hand"
-        android:scaleType="centerInside"
-        android:tint="@color/colorSurface"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_home" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="240dp"
-        android:layout_height="240dp"
-        android:src="@drawable/ring"
-        app:layout_constraintBottom_toBottomOf="@+id/modernAnalogClock"
-        app:layout_constraintEnd_toEndOf="@+id/modernAnalogClock"
-        app:layout_constraintStart_toStartOf="@+id/modernAnalogClock"
-        app:layout_constraintTop_toTopOf="@+id/modernAnalogClock" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/alarmRecyclerView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:background="@color/colorBackground"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:listitem="@layout/alarm_card" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- TextView -->
+            <TextView
+                android:id="@+id/text_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Alarm"
+                android:textColor="@color/background"
+                android:textSize="35sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <!-- AnalogClock -->
+            <AnalogClock
+                android:id="@+id/modernAnalogClock"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="40dp"
+                android:dial="@drawable/custom_dial"
+                android:hand_hour="@drawable/custom_hour_hand"
+                android:hand_minute="@drawable/custom_minute_hand"
+                android:hand_second="@drawable/custom_second_hand"
+                android:scaleType="centerInside"
+                android:tint="@color/colorSurface"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_home" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:src="@drawable/ring"
+                app:layout_constraintBottom_toBottomOf="@+id/modernAnalogClock"
+                app:layout_constraintEnd_toEndOf="@+id/modernAnalogClock"
+                app:layout_constraintStart_toStartOf="@+id/modernAnalogClock"
+                app:layout_constraintTop_toTopOf="@+id/modernAnalogClock" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/alarmRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorBackground"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                tools:listitem="@layout/alarm_card" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
     <!-- FloatingActionButton -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addAlarmBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="20dp"
         android:backgroundTint="@color/primaryDark"
         android:rotation="360"
         android:saveEnabled="false"
